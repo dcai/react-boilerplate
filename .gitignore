@@ -1,0 +1,9 @@
+node_modules
+public
+.firebase
+.env
+.tool-versions
+*.log
+config.json
+.eslintcache
+public
