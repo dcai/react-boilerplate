@@ -15,16 +15,15 @@ module.exports = {
       template: "./src/index.html",
       hash: true,
       meta: {
-        version: process.env.CI_COMMIT_SHORT_SHA || "",
+        version: process.env.GITHUB_SHA || "",
         buildDate: new Date().toISOString(),
-        viewport: "width=device-width, initial-scale=1, shrink-to-fit=no",
       },
     }),
     new webpack.DefinePlugin({
       PRODUCTION: JSON.stringify(true),
       "process.env": JSON.stringify({
-        gitlab_ci: {
-          commit: process.env.CI_COMMIT_SHORT_SHA || "",
+        github: {
+          commit_sha: process.env.GITHUB_SHA || "",
         },
         buildDate: new Date().toISOString(),
       }),
