@@ -8,17 +8,24 @@ module.exports = {
   output: {
     publicPath: "/",
     path: path.resolve(__dirname, "public/"),
-    // filename: "[name].bundle.js",
     filename: "[name].[contenthash].js",
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: "./src/index.html", // path to your index.html file
+      template: "./src/index.html",
+      hash: true,
+      meta: {
+        version: process.env.CI_COMMIT_SHORT_SHA || "",
+        buildDate: new Date().toISOString(),
+        viewport: "width=device-width, initial-scale=1, shrink-to-fit=no",
+      },
     }),
     new webpack.DefinePlugin({
       PRODUCTION: JSON.stringify(true),
-      "process.env.BUILD_INFO": JSON.stringify({
-        commit: process.env.CI_COMMIT_SHORT_SHA || "",
+      "process.env": JSON.stringify({
+        gitlab_ci: {
+          commit: process.env.CI_COMMIT_SHORT_SHA || "",
+        },
         buildDate: new Date().toISOString(),
       }),
     }),
@@ -47,6 +54,11 @@ module.exports = {
         use: {
           loader: "babel-loader",
         },
+      },
+      {
+        test: /\.css$/i,
+        include: path.resolve(__dirname, "src"),
+        use: ["style-loader", "css-loader", "postcss-loader"],
       },
     ],
   },

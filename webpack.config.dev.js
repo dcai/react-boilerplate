@@ -1,6 +1,5 @@
 const path = require("path");
 const { merge } = require("webpack-merge");
-
 const baseConfig = require("./webpack.config.base.js");
 
 module.exports = merge(baseConfig, {
@@ -12,6 +11,6 @@ module.exports = merge(baseConfig, {
       directory: path.join(__dirname, "public"),
     },
     compress: false,
-    port: 6600,
+    port: process.env.WEBPACK_DEV_SERVER_PORT || 6600,
   },
 });
