@@ -1,34 +1,41 @@
-name: NodeJS with Webpack
+name: build and deploy
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+    push:
+        branches: ["main"]
+    pull_request:
+        branches: ["main"]
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - uses: actions/checkout@v3
+            - name: setup node
+              uses: actions/setup-node@v4
+              with:
+                  node-version: 20
 
-    strategy:
-      matrix:
-        node-version: [18.x]
+            - uses: pnpm/action-setup@v3
+              with:
+                  version: 8
+                  run_install: false
 
-    steps:
-    - uses: actions/checkout@v3
-    - uses: pnpm/action-setup@v3
-      with:
-          version: 8
+            - name: Get pnpm store directory
+              shell: bash
+              run: |
+                  echo "STORE_PATH=$(pnpm store path --silent)" >> $GITHUB_ENV
+                  cat $GITHUB_ENV
 
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-        cache: "pnpm"
+            - uses: actions/cache@v4
+              name: Setup pnpm cache
+              with:
+                  path: ${{ env.STORE_PATH }}
+                  key: ${{ runner.os }}_pnpm-store_${{ hashFiles('**/pnpm-lock.yaml') }}
 
-    - name: Build
-      run: |
-        pnpm install
-        pnpm lint
-        pnpm build
-        cat public/index.html
+            - name: Build
+              run: |
+                  pnpm install
+                  pnpm lint
+                  pnpm build
+                  cat public/index.html
