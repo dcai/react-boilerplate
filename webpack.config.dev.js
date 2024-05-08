@@ -11,6 +11,6 @@ module.exports = merge(baseConfig, {
       directory: path.join(__dirname, "public"),
     },
     compress: false,
-    port: process.env.WEBPACK_DEV_SERVER_PORT || 6600,
+    port: process.env.WEBPACK_DEV_SERVER_PORT || 6700,
   },
 });

@@ -48,12 +48,21 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.(js|jsx)$/,
+        // Match `.js`, `.jsx`, `.ts` or `.tsx` files
+        test: /\.[jt]sx?$/,
         exclude: /node_modules/,
-        use: {
-          loader: "babel-loader",
+        loader: "esbuild-loader",
+        options: {
+          target: "es2015",
         },
       },
+      // {
+      //   test: /\.(js|jsx)$/,
+      //   exclude: /node_modules/,
+      //   use: {
+      //     loader: "babel-loader",
+      //   },
+      // },
       {
         test: /\.css$/i,
         include: path.resolve(__dirname, "src"),
