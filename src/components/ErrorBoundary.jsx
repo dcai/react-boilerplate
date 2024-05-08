@@ -6,7 +6,7 @@ import React from "react";
  * @returns {string}
  */
 function stringifyException(exception) {
-  const replacer = (key, value) => {
+  const replacer = (_key, value) => {
     if (value instanceof Error) {
       const error = {};
 
