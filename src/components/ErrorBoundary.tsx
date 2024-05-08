@@ -1,36 +1,49 @@
-import React from "react";
+import * as React from "react";
 
 /**
  * Convert an exception to a string
  * @param {exception} exception
  * @returns {string}
  */
-function stringifyException(exception) {
-  const replacer = (_key, value) => {
-    if (value instanceof Error) {
-      const error = {};
+function stringifyException(exception: Error | null): string {
+  const replacer = (_key: string, error: unknown) => {
+    if (error instanceof Error) {
+      const result: Record<string, unknown> = {};
 
-      Object.getOwnPropertyNames(value).forEach((propName) => {
-        error[propName] = value[propName];
+      Object.getOwnPropertyNames(error).forEach((propName: keyof Error) => {
+        result[propName] = error[propName];
       });
 
-      return error;
+      return result;
     }
 
-    return value;
+    return error;
   };
   return JSON.stringify(exception, replacer);
 }
-export class ErrorBoundary extends React.Component {
+
+interface ErrorBoundaryProps {
+  children: React.ReactNode;
+}
+
+interface ErrorBoundaryState {
+  hasError: boolean;
+  error: Error | null;
+}
+
+export class ErrorBoundary extends React.Component<
+  ErrorBoundaryProps,
+  ErrorBoundaryState
+> {
   state = {
     hasError: false,
     error: null,
   };
-  static getDerivedStateFromError(error) {
+  static getDerivedStateFromError(error: Error) {
     // Update state so the next render will show the fallback UI.
     return { hasError: true, error };
   }
-  componentDidCatch(error, _errorInfo) {
+  componentDidCatch(error: Error, _errorInfo: unknown) {
     // You can also log the error to an error reporting service
     this.setState({ error, hasError: true });
   }

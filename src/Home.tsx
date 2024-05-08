@@ -1,10 +1,7 @@
 import * as React from "react";
-import { Layout } from "./components/Layout.jsx";
+import { Layout } from "./components/Layout";
 
-/**
- * @returns {JSX.Element}
- */
-export function App() {
+export function Home() {
   return (
     <div className="h-screen bg-green-900 py-0">
       <Layout>

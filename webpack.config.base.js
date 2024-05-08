@@ -4,7 +4,7 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 
 module.exports = {
   mode: "none",
-  entry: "./src/index.jsx",
+  entry: "./src/index.tsx",
   output: {
     publicPath: "/",
     path: path.resolve(__dirname, "public/"),
@@ -30,7 +30,7 @@ module.exports = {
     }),
   ],
   resolve: {
-    extensions: [".js", ".jsx"],
+    extensions: [".js", ".jsx", ".ts", ".tsx"],
   },
   optimization: {
     runtimeChunk: "single",
@@ -56,13 +56,6 @@ module.exports = {
           target: "es2015",
         },
       },
-      // {
-      //   test: /\.(js|jsx)$/,
-      //   exclude: /node_modules/,
-      //   use: {
-      //     loader: "babel-loader",
-      //   },
-      // },
       {
         test: /\.css$/i,
         include: path.resolve(__dirname, "src"),

@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Link } from "react-router-dom";
 
 const GITHUB_LINK = "https://github.com/dcai";
 const Header = () => {
@@ -15,12 +16,12 @@ const Header = () => {
             </span>
           </a>
           <div className="flex items-center lg:order-2">
-            <a href={GITHUB_LINK} className={linkClass}>
-              Log in
-            </a>
-            <a href={GITHUB_LINK} className={activeLinkClass}>
-              Get started
-            </a>
+            <Link to="/" className={linkClass}>
+              Home
+            </Link>
+            <Link to="/about" className={activeLinkClass}>
+              About
+            </Link>
           </div>
         </div>
       </nav>
@@ -48,11 +49,15 @@ const Footer = () => (
   </footer>
 );
 
+type LayoutProps = {
+  children: React.ReactNode;
+};
+
 /**
  * @param {{ children: React.ReactNode }} props
  * @returns {JSX.Element}
  */
-export function Layout({ children }) {
+export function Layout({ children }: LayoutProps) {
   return (
     <div className="h-screen bg-green-900 py-0">
       <Header />
